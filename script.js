@@ -73,6 +73,22 @@ const restartButton = document.getElementById('restart-button');
 const doctorCharacter = document.getElementById('doctor-character');
 const currentJunction = document.getElementById('current-junction');
 
+// Mobil cihaz kontrolü
+let isMobile = false;
+
+function checkIfMobile() {
+    isMobile = window.innerWidth <= 768;
+    
+    // Mobil cihazlarda başlangıç konumu düzelt
+    if (doctorCharacter) {
+        doctorCharacter.style.bottom = isMobile ? 
+            (window.innerWidth <= 480 ? '50px' : '40px') : '20px';
+    }
+    
+    // Ekranlara mobil sınıfı ekle/çıkar
+    document.body.classList.toggle('mobile-device', isMobile);
+}
+
 // Initialize the game
 function initGame() {
     // Set method name and description
@@ -85,9 +101,12 @@ function initGame() {
     gameState.failedReasons = [];
     gameState.pathChosen = null;
     
+    // Mobil cihaz kontrolü
+    checkIfMobile();
+    
     // Reset doctor position
     doctorCharacter.style.transform = 'translateX(-50%)';
-    doctorCharacter.style.bottom = '20px';
+    doctorCharacter.style.bottom = isMobile ? '50px' : '20px';
     doctorCharacter.style.left = '50%';
     doctorCharacter.className = 'doctor-character';
     
@@ -99,6 +118,9 @@ function initGame() {
     yesPath.addEventListener('click', () => selectPath(true));
     noPath.addEventListener('click', () => selectPath(false));
     restartButton.addEventListener('click', resetGame);
+    
+    // Ekran yeniden boyutlandırma için dinleyici
+    window.addEventListener('resize', checkIfMobile);
 }
 
 // Initialize Audio Context for sound effects
@@ -321,7 +343,8 @@ function resetGame() {
     
     // Reset doctor character
     doctorCharacter.className = 'doctor-character';
-    doctorCharacter.style.bottom = '20px';
+    doctorCharacter.style.bottom = isMobile ? 
+        (window.innerWidth <= 480 ? '50px' : '40px') : '20px';
     doctorCharacter.style.left = '50%';
     
     showScreen(startScreen);
