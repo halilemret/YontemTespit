@@ -53,13 +53,16 @@ const startButton = document.getElementById('start-button');
 const questionText = document.getElementById('question-text');
 const yesButton = document.getElementById('yes-button');
 const noButton = document.getElementById('no-button');
-const progressBar = document.getElementById('progress');
+const progressCircle = document.querySelector('.progress-circle');
+const progressPercentage = document.getElementById('progress-percentage');
 const progressText = document.getElementById('progress-text');
 const resultTitle = document.getElementById('result-title');
 const resultDescription = document.getElementById('result-description');
 const resultIcon = document.getElementById('result-icon');
 const failedReasons = document.getElementById('failed-reasons');
 const restartButton = document.getElementById('restart-button');
+const confettiContainer = document.getElementById('confetti-container');
+const questionCard = document.querySelector('.question-card');
 
 // Initialize the game
 function initGame() {
@@ -81,22 +84,45 @@ function initGame() {
 
 // Start the game
 function startGame() {
-    showScreen(questionsScreen);
-    displayCurrentQuestion();
+    // Add transition class for smooth animation
+    startScreen.classList.add('transition-out');
+    
+    // Wait for transition to complete before showing questions screen
+    setTimeout(() => {
+        showScreen(questionsScreen);
+        displayCurrentQuestion();
+    }, 300);
 }
 
-// Display the current question
+// Display the current question with animation
 function displayCurrentQuestion() {
     const question = gameConfig.questions[gameState.currentQuestionIndex];
-    questionText.textContent = question.text;
     
-    // Update progress
-    const progress = ((gameState.currentQuestionIndex + 1) / gameConfig.questions.length) * 100;
-    progressBar.style.width = `${progress}%`;
-    progressText.textContent = `Soru ${gameState.currentQuestionIndex + 1}/${gameConfig.questions.length}`;
+    // Animate question card out
+    if (questionCard) {
+        questionCard.style.opacity = '0';
+        questionCard.style.transform = 'translateY(20px)';
+    }
+    
+    // Update question text and animate in after a short delay
+    setTimeout(() => {
+        questionText.textContent = question.text;
+        
+        // Update progress
+        const progress = ((gameState.currentQuestionIndex + 1) / gameConfig.questions.length) * 100;
+        progressCircle.style.setProperty('--progress-value', `${progress}%`);
+        progressPercentage.textContent = `${Math.round(progress)}%`;
+        progressText.textContent = `Soru ${gameState.currentQuestionIndex + 1}/${gameConfig.questions.length}`;
+        
+        // Animate question card in
+        if (questionCard) {
+            questionCard.style.opacity = '1';
+            questionCard.style.transform = 'translateY(0)';
+        }
+    }, 300);
 }
 
-// Handle question answer
+// Handle question answer with animations
 function answerQuestion(isYes) {
     const currentQuestion = gameConfig.questions[gameState.currentQuestionIndex];
     const isCorrectAnswer = currentQuestion.negativeRequired ? !isYes : isYes;
@@ -118,64 +144,205 @@ function answerQuestion(isYes) {
         });
     }
     
-    // Move to next question or show result
-    if (gameState.currentQuestionIndex < gameConfig.questions.length - 1) {
-        gameState.currentQuestionIndex++;
-        displayCurrentQuestion();
+    // Apply answer feedback animation
+    const button = isYes ? yesButton : noButton;
+    
+    // Add appropriate animation class based on correctness
+    if (isCorrectAnswer) {
+        button.classList.add('correct-answer');
+        playSuccessSound();
     } else {
-        showResult();
+        button.classList.add('wrong-answer');
+        playErrorSound();
     }
+    
+    // Remove animation class after animation completes
+    setTimeout(() => {
+        button.classList.remove('correct-answer', 'wrong-answer');
+        
+        // Move to next question or show result
+        if (gameState.currentQuestionIndex < gameConfig.questions.length - 1) {
+            gameState.currentQuestionIndex++;
+            displayCurrentQuestion();
+        } else {
+            showResult();
+        }
+    }, 500);
 }
 
-// Show the result screen
+// Show the result screen with animations
 function showResult() {
-    showScreen(resultScreen);
+    // Add transition class for smooth animation
+    questionsScreen.classList.add('transition-out');
     
-    // Determine if all answers are correct
-    const isSuccessful = gameState.failedReasons.length === 0;
-    
-    if (isSuccessful) {
-        // Success case
-        resultIcon.innerHTML = '✅';
-        resultTitle.textContent = 'Bu yöntemi uygulayabilirsiniz!';
-        resultDescription.textContent = `Tüm kriterler karşılandı. ${gameConfig.methodName} uygulanabilir.`;
-        failedReasons.style.display = 'none';
-    } else {
-        // Failed case
-        resultIcon.innerHTML = '❌';
-        resultTitle.textContent = 'Bu yöntemi kullanamazsınız!';
-        resultDescription.textContent = 'Aşağıdaki nedenlerden dolayı bu yöntem uygulanamaz:';
+    setTimeout(() => {
+        showScreen(resultScreen);
         
-        // Display failed reasons
-        failedReasons.style.display = 'block';
-        failedReasons.innerHTML = '<h3>Kriterler karşılanmadı:</h3>';
+        // Determine if all answers are correct
+        const isSuccessful = gameState.failedReasons.length === 0;
         
-        gameState.failedReasons.forEach(reason => {
-            const reasonItem = document.createElement('div');
-            reasonItem.classList.add('failed-reason-item');
-            reasonItem.textContent = `${reason.explanation}`;
-            failedReasons.appendChild(reasonItem);
-        });
-    }
+        if (isSuccessful) {
+            // Success case
+            resultIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
+            resultIcon.classList.add('success');
+            resultTitle.textContent = 'Bu yöntemi uygulayabilirsiniz!';
+            resultDescription.textContent = `Tüm kriterler karşılandı. ${gameConfig.methodName} uygulanabilir.`;
+            failedReasons.style.display = 'none';
+            
+            // Create confetti effect for success
+            createConfetti();
+            playSuccessSound();
+        } else {
+            // Failed case
+            resultIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
+            resultIcon.classList.add('error');
+            resultTitle.textContent = 'Bu yöntemi kullanamazsınız!';
+            resultDescription.textContent = 'Aşağıdaki nedenlerden dolayı bu yöntem uygulanamaz:';
+            
+            // Display failed reasons with staggered animation
+            failedReasons.style.display = 'block';
+            failedReasons.innerHTML = '<h3>Kriterler karşılanmadı:</h3>';
+            
+            gameState.failedReasons.forEach((reason, index) => {
+                const reasonItem = document.createElement('div');
+                reasonItem.classList.add('failed-reason-item');
+                reasonItem.textContent = `${reason.explanation}`;
+                reasonItem.style.animationDelay = `${0.2 + index * 0.1}s`;
+                failedReasons.appendChild(reasonItem);
+            });
+            
+            playErrorSound();
+        }
+    }, 300);
 }
 
-// Reset the game to start again
+// Reset the game to start again with animations
 function resetGame() {
-    gameState.currentQuestionIndex = 0;
-    gameState.answers = [];
-    gameState.failedReasons = [];
-    showScreen(startScreen);
+    // Add transition class for smooth animation
+    resultScreen.classList.add('transition-out');
+    
+    setTimeout(() => {
+        // Reset game state
+        gameState.currentQuestionIndex = 0;
+        gameState.answers = [];
+        gameState.failedReasons = [];
+        
+        // Clear confetti
+        confettiContainer.innerHTML = '';
+        
+        // Reset result icon classes
+        resultIcon.classList.remove('success', 'error');
+        
+        showScreen(startScreen);
+    }, 300);
 }
 
-// Helper function to show only one screen
+// Helper function to show only one screen with animations
 function showScreen(screenToShow) {
     // Hide all screens
-    startScreen.classList.remove('active');
-    questionsScreen.classList.remove('active');
-    resultScreen.classList.remove('active');
+    startScreen.classList.remove('active', 'transition-out');
+    questionsScreen.classList.remove('active', 'transition-out');
+    resultScreen.classList.remove('active', 'transition-out');
     
     // Show the requested screen
     screenToShow.classList.add('active');
+}
+
+// Create confetti animation for success
+function createConfetti() {
+    // Clear previous confetti
+    confettiContainer.innerHTML = '';
+    
+    // Create confetti pieces
+    const colors = ['#4a6fa5', '#166088', '#4cb5ae', '#4CAF50', '#ffeb3b'];
+    
+    for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('confetti');
+        
+        // Random position
+        confetti.style.left = `${Math.random() * 100}%`;
+        
+        // Random color
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        
+        // Random size
+        const size = Math.random() * 10 + 5;
+        confetti.style.width = `${size}px`;
+        confetti.style.height = `${size}px`;
+        
+        // Random shape
+        const shapes = ['circle', 'square', 'triangle'];
+        const shape = shapes[Math.floor(Math.random() * shapes.length)];
+        if (shape === 'circle') {
+            confetti.style.borderRadius = '50%';
+        } else if (shape === 'triangle') {
+            confetti.style.width = '0';
+            confetti.style.height = '0';
+            confetti.style.backgroundColor = 'transparent';
+            confetti.style.borderLeft = `${size}px solid transparent`;
+            confetti.style.borderRight = `${size}px solid transparent`;
+            confetti.style.borderBottom = `${size}px solid ${colors[Math.floor(Math.random() * colors.length)]}`;
+        }
+        
+        // Random animation duration
+        confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+        
+        // Random animation delay
+        confetti.style.animationDelay = `${Math.random() * 2}s`;
+        
+        confettiContainer.appendChild(confetti);
+    }
+}
+
+// Simple sound effects (optional)
+function playSuccessSound() {
+    // Implement only if browser supports AudioContext
+    try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(587.33, audioContext.currentTime); // D5
+        oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
+        oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G5
+        
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + 0.5);
+    } catch (e) {
+        console.log('Audio not supported');
+    }
+}
+
+function playErrorSound() {
+    // Implement only if browser supports AudioContext
+    try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(392.00, audioContext.currentTime); // G4
+        oscillator.frequency.setValueAtTime(349.23, audioContext.currentTime + 0.1); // F4
+        
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + 0.3);
+    } catch (e) {
+        console.log('Audio not supported');
+    }
 }
 
 // Initialize the game when the page loads
