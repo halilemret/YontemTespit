@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tıbbi Yöntem Karar Destek Oyunu</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen active">
+            <h1 id="method-title">Tıbbi Yöntem Değerlendirme</h1>
+            <div class="method-description">
+                <p id="method-description">Bu oyun, belirli bir tıbbi yöntemin uygulanabilir olup olmadığını değerlendirmek için tasarlanmıştır. Soruları yanıtlayarak yöntemin uygunluğunu test edin.</p>
+            </div>
+            <button id="start-button" class="button">Başla</button>
+        </div>
+
+        <!-- Questions Screen -->
+        <div id="questions-screen" class="screen">
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div id="progress" class="progress"></div>
+                </div>
+                <div id="progress-text">Soru 1/5</div>
+            </div>
+            
+            <div class="question-container">
+                <h2 id="question-text">Soru yükleniyor...</h2>
+                
+                <div class="answer-buttons">
+                    <button id="yes-button" class="button answer-button">Evet</button>
+                    <button id="no-button" class="button answer-button">Hayır</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Screen -->
+        <div id="result-screen" class="screen">
+            <div id="result-icon"></div>
+            <h2 id="result-title">Sonuç</h2>
+            <p id="result-description">Değerlendirme sonucu burada görünecek.</p>
+            <div id="failed-reasons" class="failed-reasons">
+                <!-- Failed reasons will be added here dynamically -->
+            </div>
+            <button id="restart-button" class="button">Yeniden Başla</button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
