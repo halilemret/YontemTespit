@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tıbbi Yöntem Karar Destek Oyunu</title>
+    <title>Tıbbi Yol Karar Oyunu</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,41 +20,53 @@
                         <i class="fas fa-heartbeat pulse"></i>
                     </div>
                 </div>
-                <h1 id="method-title">Tıbbi Yöntem Değerlendirme</h1>
+                <h1 id="method-title">Tıbbi Yöntem Karar Yolu</h1>
                 <div class="method-description">
-                    <p id="method-description">Bu oyun, belirli bir tıbbi yöntemin uygulanabilir olup olmadığını değerlendirmek için tasarlanmıştır. Soruları yanıtlayarak yöntemin uygunluğunu test edin.</p>
+                    <p id="method-description">Bu oyunda, doktor karakterimiz yolda ilerlerken karşısına çıkan tıbbi karar noktalarında doğru yolu seçmeye çalışacak. Tüm kriterleri sağlayan yolu seçebilecek misiniz?</p>
                 </div>
                 <button id="start-button" class="button">
-                    <span>Başla</span>
+                    <span>Yolculuğa Başla</span>
                     <i class="fas fa-arrow-right"></i>
                 </button>
             </div>
         </div>
 
-        <!-- Questions Screen -->
-        <div id="questions-screen" class="screen">
-            <div class="progress-container">
-                <div class="circular-progress">
-                    <div class="progress-circle">
-                        <span id="progress-percentage">20%</span>
-                    </div>
-                </div>
-                <div id="progress-text">Soru 1/5</div>
+        <!-- Game Screen with Road and Doctor -->
+        <div id="game-screen" class="screen">
+            <div class="game-stats">
+                <div id="question-counter">Soru: 1/5</div>
+                <div id="progress-indicator">İlerleme: 20%</div>
             </div>
             
-            <div class="question-container">
-                <div class="question-card">
-                    <h2 id="question-text">Soru yükleniyor...</h2>
+            <div class="road-container">
+                <div class="road-background">
+                    <!-- Road background will be set in CSS using yol.PNG -->
+                </div>
+                
+                <div class="doctor-character" id="doctor-character">
+                    <!-- Doctor character using doktor.png -->
+                    <img src="doktor.png" alt="Doktor">
+                </div>
+                
+                <div class="junction-point" id="current-junction">
+                    <div class="question-bubble">
+                        <p id="question-text">Soru yükleniyor...</p>
+                    </div>
                     
-                    <div class="answer-buttons">
-                        <button id="yes-button" class="button answer-button">
-                            <i class="fas fa-check"></i>
-                            <span>Evet</span>
-                        </button>
-                        <button id="no-button" class="button answer-button">
-                            <i class="fas fa-times"></i>
-                            <span>Hayır</span>
-                        </button>
+                    <div class="path-choices">
+                        <div class="path-choice" id="yes-path">
+                            <div class="path-label">EVET</div>
+                            <div class="path-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="path-choice" id="no-path">
+                            <div class="path-label">HAYIR</div>
+                            <div class="path-arrow">
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -64,8 +76,8 @@
         <div id="result-screen" class="screen">
             <div class="result-container">
                 <div id="result-icon" class="result-icon"></div>
-                <h2 id="result-title">Sonuç</h2>
-                <p id="result-description">Değerlendirme sonucu burada görünecek.</p>
+                <h2 id="result-title">Yolculuk Sonucu</h2>
+                <p id="result-description">Yolculuk sonucunuz burada görünecek.</p>
                 <div id="failed-reasons" class="failed-reasons">
                     <!-- Failed reasons will be added here dynamically -->
                 </div>
