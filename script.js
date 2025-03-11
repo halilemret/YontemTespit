@@ -1,37 +1,44 @@
 // Game configuration
 const gameConfig = {
     // Default method name and description (can be changed)
-    methodName: "Epidural Anestezi",
-    methodDescription: "Epidural anestezi, doğum sırasında ağrı kontrolü sağlayan bir yöntemdir. Doktor karakterinin yolda doğru tercihleri yapmasına yardım edin.",
+    methodName: "LAKTASYONEL AMONERE METODU (LAM)",
+    methodDescription: "Laktasyonel amonere metodu; emzirmenin, bazı koşullara uyulması halinde, fizyolojik etkisiyle ovulasyonu baskılamasına dayanan bir aile planlaması yöntemidir.",
     
     // Questions with their details
     questions: [
         {
             id: 1,
-            text: "Hasta epidural anestezi için onay veriyor mu?",
-            explanation: "Hastanın bilgilendirilmiş onamı olmadan hiçbir işlem yapılamaz."
+            text: "Bebeğiniz 6 aylıktan daha küçük mü?",
+            explanation: "6 aydan küçük bebeklerde LAM uygulanamaz."
         },
         {
             id: 2,
-            text: "Hastada kanama bozukluğu var mı?",
-            explanation: "Kanama bozukluğu olan hastalarda epidural anestezi uygulanması kontrendikedir.",
-            negativeRequired: true // For this question, "No" is the correct answer
+            text: "Adetleriniz başladı mı? (Doğumdan sonra ilk 8 haftadaki kanama sayılmaz.)",
+            explanation: "Doğumdan sonraki 8 haftadan sonra 2 tam gün menstrüel kanama görülmüşse başka bir yöntem için danışmanlık alabilirsiniz.",
+            negativeRequired: true
         },
         {
             id: 3,
-            text: "Epidural anestezi için gerekli ekipman mevcut mu?",
-            explanation: "Gerekli ekipman olmadan işlem yapılamaz."
+            text: " Bebeğinizi gündüz ve gece her istedikçe, sık aralıklarla (günde 6-10 kez) ve en az 4 dakika, her iki memeden tam ve tama yakın emziriyor musunuz?",
+            explanation: "LAM yöntemini etkili olarak kullanmak için tam emzirmenin olması gerekir. "
         },
         {
             id: 4,
-            text: "Hastada lokal anestezik alerjisi var mı?",
-            explanation: "Lokal anestezik alerjisi olan hastalarda epidural anestezi uygulanması kontrendikedir.",
+            text: "Bebeğinize herhangi bir ek gıda veriyor musunuz?",
+            explanation: "LAM’ın etkili olabilmesi için tam emzirme gerekir ve bunun için herhangi bir ek gıda kulanılmamalıdır. ",
             negativeRequired: true
         },
         {
             id: 5,
-            text: "Anestezi uzmanı mevcut mu?",
-            explanation: "Epidural anestezi, yalnızca anestezi uzmanı tarafından uygulanabilir."
+            text: "AIDS misiniz? AIDS’ e yol açan HIV ile enfekte misiniz?",
+            explanation: "HIV anne sütü ile bebeğe bulaşabilir. ",
+            negativeRequired: true
+        },
+        {
+            id: 6,
+            text: "Sağlık personeli tarafından herhangi bir sebepten ötürü bebeğinizi emzirmemeniz gerektiği söylendi mi?",
+            explanation: "Emzirmeyi etkileyecek ilaçlar kullanılıyorsa veya aktif viral hepatit varsa emzirilmemelidir. ",
+            negativeRequired: true
         }
     ],
     
@@ -257,7 +264,7 @@ function showResult() {
         // Success case
         resultIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
         resultIcon.className = 'result-icon success';
-        resultTitle.textContent = 'Tebrikler! Doğru Yolu Buldunuz';
+        resultTitle.textContent = 'Yöntem Uygulanabilir!';
         resultDescription.textContent = `Tüm kriterleri karşıladınız. ${gameConfig.methodName} uygulanabilir.`;
         failedReasons.style.display = 'none';
         
@@ -270,7 +277,7 @@ function showResult() {
         // Failed case
         resultIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
         resultIcon.className = 'result-icon failure';
-        resultTitle.textContent = 'Yanlış Yol Seçimi!';
+        resultTitle.textContent = 'Yöntem Uygulanamaz!';
         resultDescription.textContent = 'Aşağıdaki nedenlerden dolayı bu yöntem uygulanamaz:';
         
         // Display failed reasons
