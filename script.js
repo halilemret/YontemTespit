@@ -161,9 +161,9 @@ function displayCurrentQuestion() {
     questionText.textContent = question.text;
     
     // Update progress
-    const progress = ((gameState.currentQuestionIndex + 1) / gameConfig.questions.length) * 100;
+    //const progress = ((gameState.currentQuestionIndex + 1) / gameConfig.questions.length) * 100;
     questionCounter.textContent = `Soru: ${gameState.currentQuestionIndex + 1}/${gameConfig.questions.length}`;
-    progressIndicator.textContent = `İlerleme: ${progress}%`;
+    //progressIndicator.textContent = `İlerleme: ${progress}%`;
     
     // Reset doctor for new question
     doctorCharacter.className = 'doctor-character';
