@@ -223,6 +223,14 @@ p {
     margin: 0 auto 40px;
 }
 
+.question-bubble p {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #333;
+    line-height: 1.4;
+}
+
 .question-bubble:after {
     content: '';
     position: absolute;
@@ -377,13 +385,149 @@ p {
         height: 80px;
     }
     
+    /* Mobil Optimizasyon - Yol ayrımı ve soru kutusu */
+    .junction-point {
+        width: 95%;
+        top: 30%;
+    }
+    
+    .question-bubble {
+        max-width: 100%;
+        padding: 20px;
+        margin-bottom: 25px;
+    }
+    
+    .question-bubble p {
+        font-size: 1.2rem;
+        line-height: 1.4;
+    }
+    
     .path-choices {
-        flex-direction: column;
-        align-items: center;
-        gap: 20px;
+        flex-direction: row; /* Mobilde yan yana duracak */
+        gap: 10px;
+        margin-top: 40px;
+        justify-content: center;
     }
     
     .path-choice {
-        width: 80%;
+        width: 45%; /* Yan yana biraz daha kompakt */
+        padding: 15px 10px;
+        min-height: 100px; /* Minimum yükseklik vererek tıklanabilirliği artır */
+        justify-content: center;
+        background-color: rgba(255, 255, 255, 0.95); /* Daha opak arka plan */
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Daha belirgin gölge */
+    }
+    
+    .path-label {
+        font-size: 1.1rem;
+        text-align: center;
+        margin-bottom: 8px;
+    }
+    
+    .path-arrow {
+        font-size: 20px;
+    }
+    
+    /* Mobil cihazlarda animasyon düzenlemeleri */
+    @keyframes moveToYes {
+        0% { bottom: 20px; left: 50%; }
+        50% { bottom: 35%; left: 35%; }
+        100% { bottom: 50%; left: 25%; }
+    }
+
+    @keyframes moveToNo {
+        0% { bottom: 20px; left: 50%; }
+        50% { bottom: 35%; left: 65%; }
+        100% { bottom: 50%; left: 75%; }
+    }
+}
+
+/* Çok Küçük Ekranlar için ek optimizasyon */
+@media (max-width: 480px) {
+    .road-container {
+        height: 450px;
+    }
+    
+    .doctor-character img {
+        height: 70px;
+    }
+    
+    .junction-point {
+        top: 25%;
+    }
+    
+    .question-bubble {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .question-bubble p {
+        font-size: 1.1rem;
+        line-height: 1.3;
+    }
+    
+    .path-choices {
+        flex-direction: column; /* Çok küçük ekranlarda alt alta */
+        align-items: center;
+        gap: 15px;
+        margin-top: 25px;
+    }
+    
+    .path-choice {
+        width: 85%;
+        min-height: 80px;
+        flex-direction: row; /* Etiket ve ok yan yana */
+        justify-content: space-between;
+        padding: 15px;
+        background-color: rgba(255, 255, 255, 0.98); /* Neredeyse tam opak */
+        border: 2px solid transparent; /* Durum değişikliğini göstermek için kenar ekle */
+        transition: all 0.3s ease;
+    }
+    
+    .path-label {
+        margin-bottom: 0;
+        margin-right: 10px;
+    }
+    
+    #yes-path {
+        border-color: rgba(76, 175, 80, 0.3); /* Hafif renkli kenar */
+    }
+    
+    #yes-path:hover, #yes-path:active {
+        border-color: var(--success-color);
+        background-color: rgba(76, 175, 80, 0.1);
+    }
+    
+    #no-path {
+        border-color: rgba(244, 67, 54, 0.3); /* Hafif renkli kenar */
+    }
+    
+    #no-path:hover, #no-path:active {
+        border-color: var(--error-color);
+        background-color: rgba(244, 67, 54, 0.1);
+    }
+    
+    /* Çok küçük ekranlar için animasyon düzenlemeleri */
+    @keyframes moveToYes {
+        0% { bottom: 20px; left: 50%; }
+        50% { bottom: 35%; left: 35%; }
+        100% { bottom: 45%; left: 30%; }
+    }
+
+    @keyframes moveToNo {
+        0% { bottom: 20px; left: 50%; }
+        50% { bottom: 35%; left: 65%; }
+        100% { bottom: 45%; left: 70%; }
+    }
+    
+    /* Ekstra duyarlı tasarım için Yol geri çekilsin */
+    .road-background {
+        transform: scale(1.2);
+    }
+    
+    /* Oyun istastikleri bölümünü düzenle */
+    .game-stats {
+        padding: 8px;
+        font-size: 0.9rem;
     }
 }
