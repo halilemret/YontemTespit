@@ -25,12 +25,12 @@ const gameConfig = {
         {
             id: 4,
             text: "Bebeğinize herhangi bir ek gıda veriyor musunuz?",
-            explanation: "LAM’ın etkili olabilmesi için tam emzirme gerekir ve bunun için herhangi bir ek gıda kulanılmamalıdır. ",
+            explanation: "LAM'ın etkili olabilmesi için tam emzirme gerekir ve bunun için herhangi bir ek gıda kulanılmamalıdır. ",
             negativeRequired: true
         },
         {
             id: 5,
-            text: "AIDS misiniz? AIDS’ e yol açan HIV ile enfekte misiniz?",
+            text: "AIDS misiniz? AIDS' e yol açan HIV ile enfekte misiniz?",
             explanation: "HIV anne sütü ile bebeğe bulaşabilir. ",
             negativeRequired: true
         },
@@ -816,5 +816,65 @@ function playUiSound(soundType) {
     }
 }
 
-// Initialize the game when the page loads
-document.addEventListener('DOMContentLoaded', initGame);
+// Lazy load images for better performance
+function lazyLoadImages() {
+    const images = document.querySelectorAll('img[data-src]');
+    
+    if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.removeAttribute('data-src');
+                    imageObserver.unobserve(img);
+                }
+            });
+        });
+        
+        images.forEach(img => imageObserver.observe(img));
+    } else {
+        // Fallback for browsers that don't support IntersectionObserver
+        images.forEach(img => {
+            img.src = img.dataset.src;
+            img.removeAttribute('data-src');
+        });
+    }
+}
+
+// Initialize the game when DOM is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+    // Set page-specific metadata for better SEO
+    document.title = `${gameConfig.methodName} | Tıbbi Yol Karar Oyunu`;
+    
+    // Update meta description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+        metaDescription.setAttribute('content', gameConfig.methodDescription);
+    }
+    
+    // Initialize game
+    initGame();
+    
+    // Lazy load images
+    lazyLoadImages();
+    
+    // Add event listeners for analytics
+    document.getElementById('start-button').addEventListener('click', () => {
+        if (typeof gtag === 'function') {
+            gtag('event', 'game_start', {
+                'event_category': 'engagement',
+                'event_label': gameConfig.methodName
+            });
+        }
+    });
+    
+    document.getElementById('restart-button').addEventListener('click', () => {
+        if (typeof gtag === 'function') {
+            gtag('event', 'game_restart', {
+                'event_category': 'engagement',
+                'event_label': gameConfig.methodName
+            });
+        }
+    });
+});

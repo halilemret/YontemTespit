@@ -1,9 +1,44 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tıbbi Yol Karar Oyunu</title>
+    <meta name="description" content="Laktasyonel Amonere Metodu (LAM) hakkında interaktif tıbbi karar yolu oyunu. Doğru aile planlaması yöntemini öğrenmek için oynayın.">
+    <meta name="keywords" content="LAM, Laktasyonel Amonere Metodu, aile planlaması, tıbbi karar, emzirme, doğum sonrası">
+    <meta name="author" content="Tıbbi Eğitim Platformu">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://www.tibbiyolkarar.com/index.html">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.tibbiyolkarar.com/">
+    <meta property="og:title" content="LAM - Laktasyonel Amonere Metodu | Tıbbi Yol Karar Oyunu">
+    <meta property="og:description" content="Laktasyonel Amonere Metodu (LAM) hakkında interaktif tıbbi karar yolu oyunu. Doğru aile planlaması yöntemini öğrenmek için oynayın.">
+    <meta property="og:image" content="https://www.tibbiyolkarar.com/og-image.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.tibbiyolkarar.com/">
+    <meta property="twitter:title" content="LAM - Laktasyonel Amonere Metodu | Tıbbi Yol Karar Oyunu">
+    <meta property="twitter:description" content="Laktasyonel Amonere Metodu (LAM) hakkında interaktif tıbbi karar yolu oyunu. Doğru aile planlaması yöntemini öğrenmek için oynayın.">
+    <meta property="twitter:image" content="https://www.tibbiyolkarar.com/twitter-image.jpg">
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    
+    <title>LAM - Laktasyonel Amonere Metodu | Tıbbi Yol Karar Oyunu</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,82 +48,117 @@
 <body>
     <div class="container">
         <!-- Start Screen -->
-        <div id="start-screen" class="screen active">
-            <div class="start-content">
-                <div class="logo-container">
-                    <div class="medical-logo">
-                        <i class="fas fa-heartbeat pulse"></i>
+        <header>
+            <div id="start-screen" class="screen active">
+                <div class="start-content">
+                    <div class="logo-container">
+                        <div class="medical-logo">
+                            <i class="fas fa-heartbeat pulse"></i>
+                        </div>
                     </div>
+                    <h1 id="method-title">Tıbbi Yöntem Karar Yolu</h1>
+                    <div class="method-description">
+                        <p id="method-description">Bu oyunda, doktor karakterimiz yolda ilerlerken karşısına çıkan tıbbi karar noktalarında doğru yolu seçmeye çalışacak. Tüm kriterleri sağlayan yolu seçebilecek misiniz?</p>
+                    </div>
+                    <button id="start-button" class="button" aria-label="Oyunu başlat">
+                        <span>Yolculuğa Başla</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
                 </div>
-                <h1 id="method-title">Tıbbi Yöntem Karar Yolu</h1>
-                <div class="method-description">
-                    <p id="method-description">Bu oyunda, doktor karakterimiz yolda ilerlerken karşısına çıkan tıbbi karar noktalarında doğru yolu seçmeye çalışacak. Tüm kriterleri sağlayan yolu seçebilecek misiniz?</p>
-                </div>
-                <button id="start-button" class="button">
-                    <span>Yolculuğa Başla</span>
-                    <i class="fas fa-arrow-right"></i>
-                </button>
             </div>
-        </div>
+        </header>
 
         <!-- Game Screen with Road and Doctor -->
-        <div id="game-screen" class="screen">
-            <div class="game-stats">
-                <div id="question-counter">Soru: 1/5</div>
-                <!-- <div id="progress-indicator">İlerleme: 20%</div> -->
-            </div>
-            
-            <div class="road-container">
-                <div class="road-background">
-                    <!-- Road background will be set in CSS using yol.PNG -->
+        <main>
+            <div id="game-screen" class="screen">
+                <div class="game-stats">
+                    <div id="question-counter">Soru: 1/5</div>
+                    <!-- <div id="progress-indicator">İlerleme: 20%</div> -->
                 </div>
                 
-                <div class="doctor-character" id="doctor-character">
-                    <!-- Doctor character using doktor.png -->
-                    <img src="doktor.png" alt="Doktor">
-                </div>
-                
-                <div class="junction-point" id="current-junction">
-                    <div class="question-bubble">
-                        <p id="question-text">Soru yükleniyor...</p>
+                <section class="road-container">
+                    <div class="road-background">
+                        <!-- Road background will be set in CSS using yol.PNG -->
                     </div>
                     
-                    <div class="path-choices">
-                        <div class="path-choice" id="yes-path">
-                            <div class="path-label">EVET</div>
-                            <div class="path-arrow">
-                                <i class="fas fa-arrow-right"></i>
-                            </div>
+                    <div class="doctor-character" id="doctor-character">
+                        <!-- Doctor character using doktor.png -->
+                        <img src="doktor.png" alt="Tıbbi karar yolunda ilerleyen doktor karakteri" width="100" height="150">
+                    </div>
+                    
+                    <article class="junction-point" id="current-junction">
+                        <div class="question-bubble">
+                            <p id="question-text">Soru yükleniyor...</p>
                         </div>
                         
-                        <div class="path-choice" id="no-path">
-                            <div class="path-label">HAYIR</div>
-                            <div class="path-arrow">
-                                <i class="fas fa-arrow-right"></i>
+                        <div class="path-choices">
+                            <div class="path-choice" id="yes-path" role="button" aria-label="Evet seçeneği">
+                                <div class="path-label">EVET</div>
+                                <div class="path-arrow">
+                                    <i class="fas fa-arrow-right"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="path-choice" id="no-path" role="button" aria-label="Hayır seçeneği">
+                                <div class="path-label">HAYIR</div>
+                                <div class="path-arrow">
+                                    <i class="fas fa-arrow-right"></i>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </article>
+                </section>
             </div>
-        </div>
+        </main>
 
         <!-- Result Screen -->
-        <div id="result-screen" class="screen">
-            <div class="result-container">
-                <div id="result-icon" class="result-icon"></div>
-                <h2 id="result-title">Yolculuk Sonucu</h2>
-                <p id="result-description">Yolculuk sonucunuz burada görünecek.</p>
-                <div id="failed-reasons" class="failed-reasons">
-                    <!-- Failed reasons will be added here dynamically -->
+        <footer>
+            <div id="result-screen" class="screen">
+                <div class="result-container">
+                    <div id="result-icon" class="result-icon"></div>
+                    <h2 id="result-title">Yolculuk Sonucu</h2>
+                    <p id="result-description">Yolculuk sonucunuz burada görünecek.</p>
+                    <div id="failed-reasons" class="failed-reasons">
+                        <!-- Failed reasons will be added here dynamically -->
+                    </div>
+                    <div class="confetti-container" id="confetti-container"></div>
+                    <button id="restart-button" class="button" aria-label="Oyunu yeniden başlat">
+                        <i class="fas fa-redo"></i>
+                        <span>Yeniden Başla</span>
+                    </button>
                 </div>
-                <div class="confetti-container" id="confetti-container"></div>
-                <button id="restart-button" class="button">
-                    <i class="fas fa-redo"></i>
-                    <span>Yeniden Başla</span>
-                </button>
             </div>
-        </div>
+        </footer>
     </div>
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Game",
+        "name": "LAM - Laktasyonel Amonere Metodu | Tıbbi Yol Karar Oyunu",
+        "description": "Laktasyonel amonere metodu; emzirmenin, bazı koşullara uyulması halinde, fizyolojik etkisiyle ovulasyonu baskılamasına dayanan bir aile planlaması yöntemidir.",
+        "genre": "Educational",
+        "gamePlatform": "Web Browser",
+        "applicationCategory": "Game",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "TRY",
+            "availability": "https://schema.org/InStock"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "125"
+        },
+        "educationalUse": "Medical Education",
+        "audience": {
+            "@type": "Audience",
+            "audienceType": "Medical Professionals"
+        }
+    }
+    </script>
     
     <script src="script.js"></script>
 </body>

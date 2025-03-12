@@ -29,6 +29,7 @@ body {
     justify-content: center;
     align-items: center;
     padding: 20px;
+    line-height: 1.6;
 }
 
 .container {
@@ -43,7 +44,7 @@ body {
     background-color: var(--card-color);
     border-radius: var(--border-radius);
     padding: 30px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow);
     text-align: center;
     animation: fadeIn 0.5s ease-in-out;
 }

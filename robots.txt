@@ -1,0 +1,6 @@
+# Tıbbi Yol Karar Oyunu - Robots.txt
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://www.tibbiyolkarar.com/sitemap.xml 
